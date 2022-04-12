@@ -75,7 +75,7 @@ class CashCalculator(Calculator):
             cash_remained /= EURO_RATE
             currency_type = 'Euro'
         elif currency_type == 'rub':
-            # Тут наверное тоже хотелось бы разделить а не присвоить?
+            # Тут наверное тоже хотелось бы разделить а не проверить равенство?
             cash_remained == 1.00
             currency_type = 'руб'
         if cash_remained > 0:
@@ -101,3 +101,19 @@ class CashCalculator(Calculator):
     # И в классе CaloriesCalculator тоже.
     def get_week_stats(self):
         super().get_week_stats()
+
+
+# создадим калькулятор денег с дневным лимитом 1000
+cash_calculator = CashCalculator(1000)
+
+# дата в параметрах не указана,
+# так что по умолчанию к записи должна автоматически добавиться сегодняшняя дата
+cash_calculator.add_record(Record(amount=145, comment="кофе"))
+# и к этой записи тоже дата должна добавиться автоматически
+cash_calculator.add_record(Record(amount=300, comment="Серёге за обед"))
+# а тут пользователь указал дату, сохраняем её
+cash_calculator.add_record(Record(amount=3000, comment="бар в Танин др", date="08.11.2019"))
+
+print(cash_calculator.get_today_cash_remained("rub"))
+# должно напечататься
+# На сегодня осталось 555 руб
